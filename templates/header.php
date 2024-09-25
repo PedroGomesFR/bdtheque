@@ -76,7 +76,7 @@
             </div>
             <div class="lienshaut2">
                 <div class="hlien1">
-                    <a href="">Catalogue</a>
+                    <a href="catalogue.php">Catalogue</a>
                 </div>
 
 
