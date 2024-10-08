@@ -1,28 +1,51 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Catalogue</title>
+</head>
+<body>
+    
+<table border=1>
+    <tr>
+        <td>
+            Titre
+        </td>
+        <td>
+            Auteur
+        </td>
+        <td>
+            Genre
+        </td>
+    </tr>
 <?php 
 // Include the necessary files for database connection and header
-include("mysql.php");
+include("mysql.php");  // Assume this initializes a PDO connection in $bdd
 include("templates/header.php");
 
-// Define the query
-$query = "SELECT * FROM bandesdessinees";
-
-// Execute the query on the database
-$result = mysqli_query($conn, $query);
-
-// Check if the query was successful
-if ($result) {
+try {
+    // Define the query
+    $query = "SELECT * FROM bandesdessinees";
+    
+    // Execute the query using PDO
+    $stmt = $bdd->query($query);  // $bdd is a PDO object
+    
     // Fetch and display the results
-    while ($row = mysqli_fetch_assoc($result)) {
-        echo "Title: " . $row['title'] . "<br>";
-        echo "Author: " . $row['author'] . "<br>";
-        echo "Year: " . $row['year'] . "<br>";
-        echo "-----------------------------<br>";
+    while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+        echo "<tr>";
+        echo "<td>" . htmlspecialchars($row['Titre']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['Auteur']) . "</td>";
+        echo "<td>" . htmlspecialchars($row['Genre']) . "</td>";
+        echo "</tr>";
     }
-} else {
+} catch (PDOException $e) {
     // Handle query failure
-    echo "Error: " . mysqli_error($conn);
+    echo "Error: " . $e->getMessage();
 }
 
-// Close the connection to the database
-mysqli_close($conn);
+// No need to explicitly close the PDO connection; it closes automatically when the script ends
 ?>
+</table>
+</body>
+</html>
